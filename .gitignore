@@ -1,0 +1,11 @@
+# Dependencias
+node_modules/
+package-lock.json
+
+# Conjunto de datos temporal extraído (los proyectos fuente .tm están en la raíz)
+dataset/
+
+# Archivos de sistema y entorno
+.DS_Store
+Thumbs.db
+*.log

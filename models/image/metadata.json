@@ -1,0 +1,29 @@
+{
+  "tfjsVersion": "3.21.0",
+  "tmVersion": "2.4.19",
+  "packageVersion": "0.8.5",
+  "packageName": "@teachablemachine/image",
+  "timeStamp": "2026-11-25T19:50:00.000Z",
+  "modelName": "exo-insight-tm-image-trained",
+  "sourceProject": "CLASIFICACION_DE_OBJETOS.tm",
+  "labels": [
+    "Alimentos_Bebidas - Coca_Cola",
+    "Alimentos_Bebidas - Pera",
+    "Computacion_Hardware - Laptop",
+    "Computacion_Hardware - PC_Escritorio",
+    "Dispositivos_Moviles - Smartphone",
+    "Dispositivos_Moviles - Tablet",
+    "Electrodomesticos - Cafetera",
+    "Electrodomesticos - Microondas",
+    "Envases_Reciclaje - Botella_Plastico",
+    "Envases_Reciclaje - Lata_Aluminio",
+    "Perifericos_Accesorios - Mouse",
+    "Perifericos_Accesorios - Teclado",
+    "Personas_Situaciones - Persona_Sentada",
+    "Personas_Situaciones - Persona_de_Pie"
+  ],
+  "imageSize": 224,
+  "trainingAccuracy": 100.0,
+  "totalSamples": 138,
+  "numClasses": 14
+}

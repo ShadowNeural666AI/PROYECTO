@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EXO INSIGHT AI – Asistente Virtual Inteligente</title>
+  <meta name="description"
+    content="EXO INSIGHT AI: Centro de control futurista con visión artificial, asistente de voz interactivo y robot 3D animado en tiempo real.">
+
+  <!-- Favicon / SVG Icon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><polygon points='50,5 95,25 95,75 50,95 5,75 5,25' fill='%230a1128' stroke='%2300e5ff' stroke-width='6'/><circle cx='50' cy='50' r='20' fill='%2300e5ff'/></svg>">
+
+  <!-- Google Fonts: Orbitron, Rajdhani, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    crossorigin="anonymous">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="theme-exo-dark">
+  <!-- Scanline / Holographic Grid Background Overlay -->
+  <div class="cyber-grid-overlay"></div>
+  <div class="ambient-glow glow-cyan"></div>
+  <div class="ambient-glow glow-blue"></div>
+  <div class="ambient-glow glow-purple"></div>
+
+  <div class="app-container">
+    <!-- ======================================================== -->
+    <!-- SIDEBAR DE NAVEGACIÓN -->
+    <!-- ======================================================== -->
+    <aside class="sidebar" id="mainSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo-hex">
+          <i class="fa-solid fa-shapes logo-icon"></i>
+          <span class="logo-pulse"></span>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">EXO INSIGHT AI</h1>
+          <p class="brand-tagline">See. Understand. Interact.</p>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="nav-item active" data-tab="dashboard">
+            <a href="#dashboard" class="nav-link">
+              <i class="fa-solid fa-house nav-icon"></i>
+              <span class="nav-text">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="history">
+            <a href="#history" class="nav-link">
+              <i class="fa-solid fa-clock-rotate-left nav-icon"></i>
+              <span class="nav-text">Historial de Análisis</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="statistics">
+            <a href="#statistics" class="nav-link">
+              <i class="fa-solid fa-chart-pie nav-icon"></i>
+              <span class="nav-text">Estadísticas</span>
+            </a>
+          </li>
+          <li class="nav-item" data-tab="settings">
+            <a href="#settings" class="nav-link">
+              <i class="fa-solid fa-sliders nav-icon"></i>
+              <span class="nav-text">Configuración</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Bottom Holographic Globe & Stage Widget -->
+      <div class="sidebar-holo-stage" id="sidebarHoloStageContainer">
+        <div class="holo-pedestal-canvas-wrapper" id="holoGlobeWrapper">
+          <canvas id="holoGlobeCanvas"></canvas>
+        </div>
+        <div class="holo-info">
+          <span class="holo-status-dot"></span>
+          <span class="holo-status-text">EXO Core v2.4 Activo</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ======================================================== -->
+    <!-- MAIN CONTENT AREA -->
+    <!-- ======================================================== -->
+    <main class="main-wrapper">
+      <!-- Top Navigation Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle-btn" id="mobileMenuBtn" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="status-chip-group">
+            <div class="status-chip chip-online">
+              <span class="indicator-dot pulse-green"></span>
+              <span class="chip-text">Sistema en línea</span>
+            </div>
+            <div class="status-chip chip-weather">
+              <i class="fa-solid fa-temperature-half chip-icon"></i>
+              <span class="chip-text" id="tempDisplay">22°C</span>
+            </div>
+            <div class="status-chip chip-location">
+              <i class="fa-solid fa-location-dot chip-icon"></i>
+              <span class="chip-text" id="cityDisplay">Lima, Perú</span>
+            </div>
+            <div class="status-chip chip-time">
+              <i class="fa-regular fa-clock chip-icon"></i>
+              <span class="chip-text" id="realTimeClock">--:--:--</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Quick 3D Robot Status Pill -->
+          <button class="exo-quick-pill" id="quickExoBtn" title="Ver EXO 3D">
+            <i class="fa-solid fa-robot"></i>
+            <span class="exo-status-text" id="topbarExoStatus">EXO: Reposo</span>
+          </button>
+
+          <!-- Notifications button -->
+          <div class="notifications-wrapper">
+            <button class="icon-action-btn" id="notificationsBtn" title="Notificaciones" aria-label="Notificaciones">
+              <i class="fa-regular fa-bell"></i>
+              <span class="badge-count" id="notifBadge">2</span>
+            </button>
+            <div class="notifications-dropdown hidden" id="notificationsMenu">
+              <div class="dropdown-header">
+                <h4>Notificaciones del Sistema</h4>
+                <button class="clear-notifs-btn" id="clearNotifsBtn">Limpiar</button>
+              </div>
+              <ul class="notif-list" id="notifList">
+                <li class="notif-item unread">
+                  <i class="fa-solid fa-microchip notif-icon cyan"></i>
+                  <div class="notif-content">
+                    <p class="notif-text">Modelo de visión Teachable Machine inicializado.</p>
+                    <span class="notif-time">Hace 2 min</span>
+                  </div>
+                </li>
+                <li class="notif-item unread">
+                  <i class="fa-solid fa-cube notif-icon purple"></i>
+                  <div class="notif-content">
+                    <p class="notif-text">Robot 3D EXO acoplado al núcleo WebGL.</p>
+                    <span class="notif-time">Hace 5 min</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- User Profile -->
+          <div class="user-profile-badge">
+            <div class="user-avatar-hex">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80"
+                alt="Operador" class="user-img">
+              <span class="user-status-ring"></span>
+            </div>
+            <div class="user-details">
+              <span class="user-name">Operador AI</span>
+              <span class="user-role">Comandante</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Views / Tab Container -->
+      <div class="views-viewport">
+        <!-- ======================================================== -->
+        <!-- VIEW 1: DASHBOARD PRINCIPAL (Conforme a la imagen) -->
+        <!-- ======================================================== -->
+        <section class="view-panel active" id="view-dashboard">
+          <div class="dashboard-grid">
+            <!-- Row 1 Left: VISIÓN ARTIFICIAL -->
+            <div class="glass-card card-vision">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <div class="card-icon-badge">
+                    <i class="fa-solid fa-camera"></i>
+                  </div>
+                  <div>
+                    <h2 class="card-title">Visión Artificial</h2>
+                    <p class="card-subtitle">Reconocimiento de objetos en tiempo real</p>
+                  </div>
+                </div>
+                <div class="card-status-badge badge-active" id="visionModelStatusBadge">
+                  <span class="status-led pulse-green"></span>
+                  <span id="visionModelStatusText">Modelo Activo</span>
+                </div>
+              </div>
+
+              <div class="vision-content-layout">
+                <!-- Video Box with Cyber Corners & Scanning Effect -->
+                <div class="camera-stream-container" id="cameraContainer">
+                  <video id="webcamVideo" autoplay playsinline muted></video>
+                  <canvas id="visionOverlayCanvas"></canvas>
+
+                  <!-- HUD Corner Brackets -->
+                  <div class="hud-corner hud-top-left"></div>
+                  <div class="hud-corner hud-top-right"></div>
+                  <div class="hud-corner hud-bottom-left"></div>
+                  <div class="hud-corner hud-bottom-right"></div>
+
+                  <!-- Laser Scanline Animation -->
+                  <div class="laser-scanner" id="laserScanner"></div>
+
+                  <!-- Bounding HUD Tag -->
+                  <div class="hud-target-box" id="hudTargetBox">
+                    <div class="hud-label-tag" id="hudLabelTag">Computadora 98.7%</div>
+                  </div>
+
+                  <!-- Camera Inactive / Standby Placeholder -->
+                  <div class="camera-standby-overlay" id="cameraStandbyOverlay">
+                    <i class="fa-solid fa-video-slash standby-icon"></i>
+                    <p class="standby-title">Cámara en Espera</p>
+                    <p class="standby-desc">Presiona «Iniciar Cámara» para comenzar el escaneo visual.</p>
+                    <button class="btn btn-cyber-primary" id="dashStartCameraBtn">
+                      <i class="fa-solid fa-power-off"></i> Iniciar Cámara
+                    </button>
+                  </div>
+
+                  <!-- Floating Camera Quick Controls -->
+                  <div class="camera-floating-controls">
+                    <button class="cam-btn" id="dashToggleCamBtn" title="Encender / Apagar cámara">
+                      <i class="fa-solid fa-camera"></i>
+                    </button>
+                    <button class="cam-btn" id="dashSnapScanBtn" title="Analizar objeto ahora">
+                      <i class="fa-solid fa-crosshairs"></i>
+                    </button>
+                    <button class="cam-btn" id="dashSwitchCamBtn" title="Cambiar cámara">
+                      <i class="fa-solid fa-rotate"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Detected Object Info Card -->
+                <div class="detected-object-card" id="detectedObjectCard">
+                  <div class="detected-badge">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>Objeto Detectado</span>
+                  </div>
+
+                  <div class="detected-icon-wrapper" id="detectedIconWrapper">
+                    <i class="fa-solid fa-laptop detected-icon" id="detectedIcon"></i>
+                  </div>
+
+                  <h3 class="detected-title" id="detectedObjectName">Computadora</h3>
+                  <div class="confidence-display">
+                    <span class="conf-label">Confianza:</span>
+                    <span class="conf-value" id="detectedConfidence">98.7%</span>
+                  </div>
+
+                  <div class="object-info-box">
+                    <span class="info-label"><i class="fa-regular fa-circle-question"></i> Información</span>
+                    <p class="info-text" id="detectedObjectDesc">Laptop o computadora portátil de trabajo o estudio.</p>
+                  </div>
+
+                  <!-- All Classes Mini Probability Bars -->
+                  <div class="probabilities-container" id="classProbabilitiesMini">
+                    <!-- Populated dynamically via vision.js -->
+                  </div>
+
+                  <button class="btn-text-action" id="viewObjectDetailsBtn">
+                    <span>Ver detalles</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 1 Right: ASISTENTE INTELIGENTE -->
+            <div class="glass-card card-assistant">
+              <div class="card-header">
+                <div class="card-title-group">
+                  <!-- Mini 3D EXO Interactive Avatar Viewport -->
+                  <div class="exo-avatar-viewport-wrapper" id="miniExoViewportWrapper"
+                    title="Haz clic para interactuar con EXO">
+                    <canvas id="miniExoCanvas"></canvas>
+                    <div class="avatar-glow-ring"></div>
+                  </div>
+                  <div>
+                    <h2 class="card-title">Asistente Inteligente</h2>
+                    <p class="card-subtitle">Pregunta, explora y descubre...</p>
+                  </div>
+                </div>
+                <button class="btn-icon-minimal" id="clearChatBtn" title="Limpiar conversación">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
+              </div>
+
+              <!-- Assistant Chat Stream -->
+              <div class="chat-stream-container" id="chatStream">
+                <!-- Initial Welcome Message from EXO -->
+                <div class="chat-message msg-assistant">
+                  <div class="msg-avatar">
+                    <i class="fa-solid fa-robot"></i>
+                  </div>
+                  <div class="msg-body">
+                    <div class="msg-bubble">
+                      ¡Hola! Soy EXO, tu asistente inteligente. ¿En qué puedo ayudarte hoy?
+                    </div>
+                    <div class="msg-meta">
+                      <span class="msg-time" id="initialMsgTime">17:24</span>
+                      <button class="msg-speak-btn" title="Escuchar"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Voice Audio Visualizer Wave Canvas -->
+              <div class="assistant-audio-wave-bar">
+                <canvas id="assistantWaveCanvas" height="40"></canvas>
+                <div class="wave-status-text" id="assistantWaveStatus">Listo para escuchar...</div>
+              </div>
+
+              <!-- Controls: Mic Button & Input -->
+              <div class="assistant-input-bar">
+                <div class="input-actions-left">
+                  <button class="mic-orb-btn" id="dashMicBtn" title="Activar micrófono / Hablar con EXO">
+                    <i class="fa-solid fa-microphone"></i>
+                    <span class="mic-ring-pulse"></span>
+                  </button>
+                  <button class="stop-audio-btn" id="dashStopAudioBtn" title="Detener audio / voz">
+                    <i class="fa-solid fa-stop"></i>
+                  </button>
+                </div>
+
+                <div class="chat-input-wrapper">
+                  <input type="text" id="chatTextInput" placeholder="Escribe un comando o pregunta a EXO..."
+                    autocomplete="off">
+                  <button class="btn-send-message" id="chatSendBtn" aria-label="Enviar mensaje">
+                    <i class="fa-solid fa-paper-plane"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2 Card 1: COMANDOS DE VOZ -->
+            <div class="glass-card card-voice-quick">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title-sm">Comandos de Voz</h3>
+                  <p class="card-subtitle-sm">Habla con tu asistente</p>
+                </div>
+                <div class="card-status-badge badge-voice-status" id="voiceStatusPill">
+                  <span class="status-led pulse-blue"></span>
+                  <span id="voiceStatusPillText">Micrófono inactivo</span>
+                </div>
+              </div>
+
+              <div class="voice-wave-container">
+                <canvas id="voiceCommandWaveCanvas" height="60"></canvas>
+              </div>
+
+              <!-- Quick Command Chips for Instant Testing (Incluyendo Comandos TM Entrenados) -->
+              <div class="quick-commands-chips">
+                <button class="chip-cmd" data-command="INICIA"
+                  style="border-color:var(--neon-green); color:var(--neon-green); font-weight:700;"><i
+                    class="fa-solid fa-bolt"></i> «INICIA»</button>
+                <button class="chip-cmd" data-command="ALTO"
+                  style="border-color:var(--neon-red); color:var(--neon-red); font-weight:700;"><i
+                    class="fa-solid fa-hand"></i> «ALTO»</button>
+                <button class="chip-cmd" data-command="Hola asistente">«Hola asistente»</button>
+                <button class="chip-cmd" data-command="¿Qué estás viendo?">«¿Qué estás viendo?»</button>
+                <button class="chip-cmd" data-command="Necesito ayuda">«Necesito ayuda»</button>
+              </div>
+            </div>
+
+            <!-- Row 2 Card 2: HISTORIAL RECIENTE -->
+            <div class="glass-card card-recent-history">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title-sm"><i class="fa-regular fa-clock"></i> Historial Reciente</h3>
+                </div>
+                <button class="link-see-all" id="seeAllHistoryBtn">Ver todo <i
+                    class="fa-solid fa-arrow-right"></i></button>
+              </div>
+
+              <ul class="recent-history-list" id="recentHistoryList">
+                <!-- Dynamically populated from history.js -->
+              </ul>
+            </div>
+
+            <!-- Row 2 Card 3: ESTADÍSTICAS RÁPIDAS -->
+            <div class="glass-card card-quick-stats">
+              <div class="card-header">
+                <h3 class="card-title-sm"><i class="fa-solid fa-chart-simple"></i> Estadísticas</h3>
+              </div>
+
+              <div class="stats-donut-layout">
+                <div class="donut-chart-container">
+                  <canvas id="quickDonutChart" width="130" height="130"></canvas>
+                  <div class="donut-center-metric">
+                    <span class="metric-number" id="quickAccuracyRate">96%</span>
+                    <span class="metric-caption">Precisión IA</span>
+                  </div>
+                </div>
+                <div class="donut-legend">
+                  <div class="legend-item">
+                    <span class="legend-dot dot-blue"></span>
+                    <span class="legend-label">Objetos</span>
+                    <span class="legend-val" id="legendObjPercent">45%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot dot-green"></span>
+                    <span class="legend-label">Comandos</span>
+                    <span class="legend-val" id="legendCmdPercent">35%</span>
+                  </div>
+                  <div class="legend-item">
+                    <span class="legend-dot dot-orange"></span>
+                    <span class="legend-label">Otros</span>
+                    <span class="legend-val" id="legendOtherPercent">20%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2 Card 4: EXO 3D ROBOT EN VIVO EN EL DASHBOARD -->
+            <div class="glass-card card-exo-dash" id="dashExoCard">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title-sm"><i class="fa-solid fa-robot"></i> EXO 3D Holográfico</h3>
+                  <p class="card-subtitle-sm">Compañero virtual interactivo en tiempo real</p>
+                </div>
+                <button class="btn btn-cyber-secondary btn-sm" id="dashExoWaveBtn" title="Saludar a EXO">
+                  <i class="fa-solid fa-hand-wave"></i> Saludar a EXO
+                </button>
+              </div>
+              <div class="dash-exo-canvas-wrapper" id="dashExoWrapper">
+                <canvas id="dashExoCanvas"></canvas>
+                <div class="dash-exo-hud-overlay">
+                  <span class="status-led pulse-cyan"></span>
+                  <span id="dashExoStatusLabel">EXO 3D Activo</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 2: HISTORIAL DE ANÁLISIS -->
+        <!-- ======================================================== -->
+        <section class="view-panel" id="view-history">
+          <div class="view-header-strip">
+            <div>
+              <h2 class="view-page-title"><i class="fa-solid fa-clock-rotate-left"></i> Historial de Análisis y Comandos
+              </h2>
+              <p class="view-page-sub">Registro cronológico de detecciones, nivel de confianza, comandos de voz y
+                respuestas</p>
+            </div>
+            <div class="view-header-actions">
+              <button class="btn btn-cyber-secondary" id="exportHistoryBtn"><i class="fa-solid fa-download"></i>
+                Exportar JSON</button>
+              <button class="btn btn-cyber-danger" id="clearFullHistoryBtn"><i class="fa-solid fa-trash-can"></i>
+                Limpiar Historial</button>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <!-- Filter Bar -->
+            <div class="history-filter-bar">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="historySearchInput" placeholder="Buscar por objeto, comando o respuesta...">
+              </div>
+              <div class="filter-pills">
+                <button class="pill-filter active" data-filter="all">Todos</button>
+                <button class="pill-filter" data-filter="vision">Visión (Objetos)</button>
+                <button class="pill-filter" data-filter="voice">Voz (Comandos)</button>
+              </div>
+            </div>
+
+            <!-- Table of History Records -->
+            <div class="history-table-container">
+              <table class="history-table">
+                <thead>
+                  <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Tipo</th>
+                    <th>Objeto / Comando</th>
+                    <th>Confianza</th>
+                    <th>Detalle / Respuesta del Asistente</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="historyTableBody">
+                  <!-- Populated dynamically via history.js -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="history-empty-state hidden" id="historyEmptyState">
+              <i class="fa-regular fa-folder-open empty-icon"></i>
+              <p class="empty-title">No hay registros aún</p>
+              <p class="empty-sub">Realiza análisis visuales o ejecuta comandos de voz para almacenar eventos en el
+                historial.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 7: ESTADÍSTICAS Y ANALÍTICA -->
+        <!-- ======================================================== -->
+        <section class="view-panel" id="view-statistics">
+          <div class="view-header-strip">
+            <div>
+              <h2 class="view-page-title"><i class="fa-solid fa-chart-pie"></i> Estadísticas de Rendimiento</h2>
+              <p class="view-page-sub">Métricas cuantitativas del modelo de Teachable Machine y uso del asistente</p>
+            </div>
+          </div>
+
+          <!-- KPI Cards Row -->
+          <div class="kpi-grid">
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon-box cyan">
+                <i class="fa-solid fa-camera"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-label">Total Análisis Visuales</span>
+                <span class="kpi-value" id="kpiTotalAnalyses">0</span>
+              </div>
+            </div>
+
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon-box purple">
+                <i class="fa-solid fa-microphone"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-label">Comandos Procesados</span>
+                <span class="kpi-value" id="kpiTotalCommands">0</span>
+              </div>
+            </div>
+
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon-box green">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-label">Confianza Promedio</span>
+                <span class="kpi-value" id="kpiAvgConfidence">96.4%</span>
+              </div>
+            </div>
+
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon-box orange">
+                <i class="fa-solid fa-trophy"></i>
+              </div>
+              <div class="kpi-data">
+                <span class="kpi-label">Objeto Más Frecuente</span>
+                <span class="kpi-value" id="kpiTopObject">Computadora</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Grid -->
+          <div class="analytics-charts-grid">
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3 class="card-title-sm"><i class="fa-solid fa-chart-column"></i> Frecuencia de Detección por Objeto
+                </h3>
+              </div>
+              <div class="chart-canvas-wrapper">
+                <canvas id="objectsBarChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3 class="card-title-sm"><i class="fa-solid fa-chart-line"></i> Actividad Cronológica de la IA</h3>
+              </div>
+              <div class="chart-canvas-wrapper">
+                <canvas id="activityLineChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3 class="card-title-sm"><i class="fa-solid fa-chart-pie"></i> Proporción de Comandos de Voz</h3>
+              </div>
+              <div class="chart-canvas-wrapper">
+                <canvas id="voiceCommandsPieChart"></canvas>
+              </div>
+            </div>
+
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3 class="card-title-sm"><i class="fa-solid fa-gauge"></i> Distribución de Precisión</h3>
+              </div>
+              <div class="chart-canvas-wrapper">
+                <canvas id="accuracyDistributionChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ======================================================== -->
+        <!-- VIEW 8: CONFIGURACIÓN -->
+        <!-- ======================================================== -->
+        <section class="view-panel" id="view-settings">
+          <div class="view-header-strip">
+            <div>
+              <h2 class="view-page-title"><i class="fa-solid fa-sliders"></i> Configuración del Asistente</h2>
+              <p class="view-page-sub">Conexión de modelos de Teachable Machine, parámetros de voz y preferencias</p>
+            </div>
+          </div>
+
+          <div class="settings-grid">
+            <!-- Teachable Machine Model Config -->
+            <div class="glass-card">
+              <h3 class="card-title-sm"><i class="fa-solid fa-cloud-arrow-up"></i> Conexión Google Teachable Machine
+              </h3>
+              <p class="card-subtitle-sm">Ingresa la URL pública exportada desde Teachable Machine o usa la ruta local:
+              </p>
+
+              <div class="form-group">
+                <label for="tmModelUrlInput">URL del Modelo de Imagen (Teachable Machine):</label>
+                <div class="input-with-button">
+                  <input type="text" id="tmModelUrlInput" class="cyber-input"
+                    placeholder="https://teachablemachine.withgoogle.com/models/TU_CODIGO/">
+                  <button class="btn btn-cyber-primary" id="loadCustomModelBtn"><i class="fa-solid fa-rotate"></i>
+                    Conectar Modelo</button>
+                </div>
+                <small class="form-tip">Ejemplo: https://teachablemachine.withgoogle.com/models/vKzJzW4x_/ (debe incluir
+                  model.json y metadata.json)</small>
+              </div>
+
+              <div class="preset-models-box">
+                <span class="preset-label">Modelos Rápidos:</span>
+                <button class="btn-chip" id="presetLocalBtn">Modelo Local (models/image/)</button>
+                <button class="btn-chip" id="presetMobileNetBtn">MobileNet (Reconocimiento Universal)</button>
+              </div>
+            </div>
+
+            <!-- Speech Synthesis Voice Settings -->
+            <div class="glass-card">
+              <h3 class="card-title-sm"><i class="fa-solid fa-volume-high"></i> Parámetros de Voz (Síntesis)</h3>
+
+              <div class="form-group">
+                <label for="voiceSelectInput">Voz del Asistente:</label>
+                <select id="voiceSelectInput" class="cyber-select"></select>
+              </div>
+
+              <div class="form-group">
+                <label for="voiceRateSlider">Velocidad de habla: <span id="rateVal">1.0x</span></label>
+                <input type="range" id="voiceRateSlider" min="0.5" max="1.5" step="0.1" value="1.0"
+                  class="cyber-slider">
+              </div>
+
+              <div class="form-group">
+                <label for="voicePitchSlider">Tono de voz: <span id="pitchVal">1.0</span></label>
+                <input type="range" id="voicePitchSlider" min="0.5" max="1.5" step="0.1" value="1.0"
+                  class="cyber-slider">
+              </div>
+
+              <button class="btn btn-cyber-secondary" id="testVoiceBtn"><i class="fa-solid fa-play"></i> Probar Voz de
+                EXO</button>
+            </div>
+
+            <!-- System Info & Reset -->
+            <div class="glass-card">
+              <h3 class="card-title-sm"><i class="fa-solid fa-server"></i> Diagnóstico del Sistema</h3>
+              <ul class="specs-list">
+                <li><strong>Plataforma:</strong> EXO INSIGHT AI v2.4 (Glassmorphism Cyberpunk Edition)</li>
+                <li><strong>Motor 3D:</strong> Three.js r128 WebGL</li>
+                <li><strong>Motor de IA:</strong> TensorFlow.js + Teachable Machine</li>
+                <li><strong>Síntesis de Voz:</strong> Web Speech API</li>
+                <li><strong>Almacenamiento:</strong> LocalStorage (Persistencia temporal lista para PostgreSQL)</li>
+              </ul>
+
+              <div class="settings-action-row">
+                <button class="btn btn-cyber-danger" id="resetAllDataBtn">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Restablecer Datos de Fábrica
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+
+  <!-- Object Details Modal -->
+  <div class="cyber-modal-overlay hidden" id="objectDetailsModal">
+    <div class="cyber-modal-box glass-card">
+      <div class="modal-header">
+        <h3 id="modalObjectTitle"><i class="fa-solid fa-circle-info"></i> Información del Objeto</h3>
+        <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalObjectBody">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ======================================================== -->
+  <!-- LIBRERÍAS EXTERNAS (CDNs) -->
+  <!-- ======================================================== -->
+  <!-- Three.js Engine & Controls for 3D Robot -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- Chart.js for Analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- TensorFlow.js & Teachable Machine Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.21.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.5/dist/teachablemachine-image.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.0/dist/mobilenet.min.js"></script>
+
+  <!-- ======================================================== -->
+  <!-- SCRIPTS MODULARES DEL PROYECTO -->
+  <!-- ======================================================== -->
+  <script src="js/exo3d.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/statistics.js"></script>
+  <script src="js/vision.js"></script>
+  <script src="js/voice.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
